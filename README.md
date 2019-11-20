@@ -1,0 +1,2 @@
+# skala-ocen
+skala ocen
