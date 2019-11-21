@@ -11,6 +11,8 @@ if ($maxout > 1000) $maxout = 1000;
 if ($maxin < 1) $maxin = 1;
 if ($maxout < 1) $maxout = 1;
 
+$half = isset($_REQUEST['half']);
+
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
@@ -48,7 +50,7 @@ td
 
 input, select
 { 
-	width: 400px;
+/*	width: 400px; */
 }
 
 table.res, tr.res, td.res, th.res
@@ -71,12 +73,13 @@ table.res, tr.res, td.res, th.res
 <table>
 <tr><td>Maksymalna liczba punktów z pracy ucznia <td><input type="text" name="maxin" value="<?=$maxin ?>"><br>
 <tr><td>Maksymalna liczba punktów w systemie <td><input type="text" name="maxout" value="<?=$maxout ?>"><br>
+<tr style='text-align: left'><td>Połówki punktów<sub style='font-weight: normal; font-size: 8px'>&lt;0.25,0.75)</sub><td style='text-align: left'><input type='checkbox' name='half' <?=$half ? " checked " : "" ?> >&nbsp;
 <tr><td><td><input type="submit" value="oblicz">
 </form>
 </table>
 <hr>
 
-
+<?var_dump($half) ?>
 <table class="res">
 <tr>
     <th class="res">punkty z pracy ucznia
@@ -84,15 +87,36 @@ table.res, tr.res, td.res, th.res
 <tr>
 
 <?
+
+function xround($x, $tohalf)
+{
+    if (!$tohalf)
+    {
+        $x = round($x);
+    }
+    else # [0,0.25)=0 [0.25,0.75)=0.5 [0.75,1]=1
+    {
+        $outint = floor($x);
+        $outmod = fmod($x, 1); # fp modulo, 567.123 -> 0.123
+        
+        if ($outmod < 0.25) { $x = $outint; }
+        else if ($outmod < 0.75) { $x = $outint+0.5; }
+        else { $x = $outint + 1; }
+    }
+
+    return $x;
+}
+
 $prev = -1;
 $first = true;
 $s = 0; # range is s-t (or s itself)
 $t = 0;
+$step = $half ? 0.5 : 1;
 for ($i = 0; $i <= $maxin; $i++)
 {
 
     $out = $i * $maxout / $maxin;
-    $out = round($out);
+    $out = xround($out, $half);
 
     if ($out != $prev) # stepped into new range
     {
@@ -136,7 +160,7 @@ for ($i = 0; $i <= $maxin; $i++)
 	<tr>
         <th class="res">punkty z pracy ucznia
         <th class="res">punkty w systemie
-        <th class="res">punkty .5
+        <th class="res">punkty 1/10
         <th class="res">punkty rzeczywiste
     <tr>
 
@@ -145,7 +169,7 @@ for ($i = 0; $i <= $maxin; $i++)
 	{
 
         $out = $i * $maxout / $maxin;
-        $outint = round($out);
+        $outint = xround($out, $half);
         $out5 = round($out, 1);
 
         ?>
