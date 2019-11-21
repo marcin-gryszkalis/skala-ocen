@@ -79,7 +79,6 @@ table.res, tr.res, td.res, th.res
 </table>
 <hr>
 
-<?var_dump($half) ?>
 <table class="res">
 <tr>
     <th class="res">punkty z pracy ucznia
