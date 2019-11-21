@@ -110,7 +110,6 @@ $prev = -1;
 $first = true;
 $s = 0; # range is s-t (or s itself)
 $t = 0;
-$step = $half ? 0.5 : 1;
 for ($i = 0; $i <= $maxin; $i++)
 {
 
