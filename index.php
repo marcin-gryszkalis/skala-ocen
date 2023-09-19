@@ -77,9 +77,10 @@ table.res, tr.res, td.res, th.res
 <tr><td>od (5-1000)<td><input type="text" name="minp" value="<?=$minp ?>"><br>
 <tr><td>do (5-1000)<td><input type="text" name="maxp" value="<?=$maxp ?>"><br>
 <tr><td>skala<td><select name="sel_scale">
-<option value="pa">SSP</option>
-<option value="pb" selected>SSP+</option>
+<option value="pa" selected>SSP</option>
+<option value="r">POSM</option>
 <!--
+<option value="pb">SSP+</option>
 <option value="osm">OSM</option>
 <option value="gi">Gimnazjum</option>
 <option value="gi2">Gimnazjum+</option>
@@ -119,13 +120,25 @@ if (isset($sel_scale))
 	}
     else if ($sel_scale == "pa")
 	{
-		$scale_size = 5; // w/o limiter
+		$scale_size = 6; // w/o limiter
 		$scale[0] = 0;  $scale_n[0] = "1"; 
 		$scale[1] = 40;	$scale_n[1] = "2";
 		$scale[2] = 52;	$scale_n[2] = "3";
 		$scale[3] = 75;	$scale_n[3] = "4";
 		$scale[4] = 90;	$scale_n[4] = "5";
-		$scale[5] = 101;$scale_n[5] = "-"; // limiter
+		$scale[5] = 96;	$scale_n[5] = "6";
+        $scale[6] = 101;$scale_n[6] = "-"; // limiter
+    }
+	else if ($sel_scale == "r")
+	{
+		$scale_size = 6; // w/o limiter
+		$scale[0] = 0;  $scale_n[0] = "1"; 
+		$scale[1] = 30;	$scale_n[1] = "2";
+		$scale[2] = 51;	$scale_n[2] = "3";
+		$scale[3] = 75;	$scale_n[3] = "4";
+		$scale[4] = 91;	$scale_n[4] = "5";
+		$scale[5] = 100; $scale_n[5] = "6";
+		$scale[6] = 101;$scale_n[6] = "-"; // limiter
 	}
 	else if ($sel_scale == "osm")
 	{
